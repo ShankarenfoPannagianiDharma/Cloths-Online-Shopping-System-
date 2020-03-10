@@ -1,3 +1,3 @@
-INSERT INTO users VALUES('lis@douglascollege.ca', 'Simon Li', '123456','0');
-INSERT INTO users VALUES('wongi5@douglascollege.ca', 'Ivan Wong', '654321','0');
-INSERT INTO users VALUES('AdminTest', 'Test Mckaine', '111111','1');
+INSERT INTO users(email,username,password) VALUES('lis@douglascollege.ca', 'Simon Li', '123456');
+INSERT INTO users(email,username,password) VALUES('wongi5@douglascollege.ca', 'Ivan Wong', '654321');
+INSERT INTO users(email,username,password,admin) VALUES('AdminTest', 'Test Mckaine', '111111','1');
