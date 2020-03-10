@@ -1,4 +1,4 @@
-package group3.config;
+package group4.config;
 
 //Configuration for database manager
 

@@ -1,4 +1,4 @@
-package group3.dao;
+package group4.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import group3.model.User;
+import group4.model.User;
 
 @Repository
 public class UserDAOImpl implements UserDAO {

@@ -1,4 +1,4 @@
-package group3.model;
+package group4.model;
 
 //information used solely for logging in
 

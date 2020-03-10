@@ -1,4 +1,4 @@
-package group3.model;
+package group4.model;
 
 //This model describes the user
 

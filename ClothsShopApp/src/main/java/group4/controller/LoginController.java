@@ -1,4 +1,4 @@
-package group3.controller;
+package group4.controller;
 
 import java.util.List;
 
@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import group3.dao.UserDAO;
-import group3.model.LoginInfo;
-import group3.model.User;
+import group4.dao.UserDAO;
+import group4.model.LoginInfo;
+import group4.model.User;
 
 @Controller
 @SessionAttributes("user")

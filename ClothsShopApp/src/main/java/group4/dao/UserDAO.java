@@ -1,8 +1,8 @@
-package group3.dao;
+package group4.dao;
 
 import java.util.List;
 
-import group3.model.User;
+import group4.model.User;
 
  
 public interface UserDAO {

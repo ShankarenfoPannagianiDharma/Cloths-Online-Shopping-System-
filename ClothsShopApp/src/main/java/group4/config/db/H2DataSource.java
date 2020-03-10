@@ -1,4 +1,4 @@
-package group3.config.db;
+package group4.config.db;
 
 ///configures database: Build from script and populate database
 
