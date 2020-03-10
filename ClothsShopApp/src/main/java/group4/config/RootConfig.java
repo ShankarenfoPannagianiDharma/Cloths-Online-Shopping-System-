@@ -12,7 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-@ComponentScan({ "group3" })
+@ComponentScan({ "group4" })
 @Configuration
 public class RootConfig {
 
