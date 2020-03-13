@@ -4,13 +4,15 @@ package group4.model;
 
 public class Product 
 {
-	  private String productName;
-	  private double price;
-	  private String productType;
-	  private int stock;
-	  private String productSize;
-	  private String description;
-	  private String imgURL;
+	private int productID;
+	private String productName;
+	private double price;
+	private String productType;
+	private int stock;				//Meaning changes depends on context: with products, means the item in stock.
+									//								with orders, means how much an item is bought
+	private String productSize;
+	private String description;
+	private String imgURL;
 
 	public double getPrice() {
 		return price;
@@ -53,6 +55,12 @@ public class Product
 	}
 	public void setImgURL(String imgURL) {
 		this.imgURL = imgURL;
+	}
+	public int getProductID() {
+		return productID;
+	}
+	public void setProductID(int productID) {
+		this.productID = productID;
 	}
 
 }

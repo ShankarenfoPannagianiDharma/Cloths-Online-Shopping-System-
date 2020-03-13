@@ -6,13 +6,14 @@ import group4.model.Product;
 
 public interface ProductsDAO 
 {
-	Product getProductFromId();
 	
 	List<Product> getAllProducts();
 	
-	List<Product> getProductsOfType();
+	List<Product> getProductsOfType(String type);
 	
-	List<Product> getProductsOfSize();
+	List<Product> getProductsOfSize(String size);
+
+	Product getProductFromId(int targetID);
 	
-	//List<Product> getProductsOutOfStock();
+	List<Product> getProductsOutOfStock();
 }

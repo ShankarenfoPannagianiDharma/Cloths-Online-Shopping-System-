@@ -11,9 +11,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import group4.dao.UserDAOImpl.UserMapper;
 import group4.model.Product;
-import group4.model.User;
 
 @Repository
 public class ProductsDAOImpl implements ProductsDAO {
@@ -25,58 +23,115 @@ public class ProductsDAOImpl implements ProductsDAO {
 		ProductsDAOImpl.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
 	}
 
-	@Override
-	public Product getProductFromId() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Product> getAllProducts() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Product> getProductsOfType() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Product> getProductsOfSize() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 	//utility function to map sql row =to=> object class
 	private static final class ProductsMapper implements RowMapper<Product> 
 	{
+		//resultset must INNER JOIN with itemtypes and itemsizes
 		public Product mapRow(ResultSet rs, int rowNum) throws SQLException 
 		{
 			Product item = new Product();
+			item.setProductID(rs.getInt("id"));
 			item.setProductName(rs.getString("name"));
 			item.setDescription(rs.getString("description"));
 			item.setImgURL(rs.getString("image"));
 			item.setPrice(rs.getDouble("price"));
-			item.setProductSize( getSizeFromInt(rs.getInt("size")) );
-			item.setType( rs.getInt("type") );
+			item.setProductSize( rs.getString("size") );
+			item.setType( rs.getString("category") );
 			item.setStock(rs.getInt("stock"));
 			return item;
 		}
 	}
 	
-	//utility function to get size from db
-	private static String getSizeFromInt(int typeID)
+	@Override
+	public Product getProductFromId(int targetID) 
 	{
-		String sql = "SELECT category FROM itemtypes WHERE id=:id";
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("id", typeID);
+		params.put("id", targetID);
 
-		String size = namedParameterJdbcTemplate.query(sql, params));
+		String sql = "SELECT products.id,name,price,stock,description,image,itemSizes.size,category FROM products "
+				+ "WHERE products.id=:id "
+				+ "INNER JOIN itemSizes ON itemSizes.id = products.size "
+				+ "INNER JOIN itemTypes ON itemTypes.id = products.type ";
+
+		List<Product> results = namedParameterJdbcTemplate.query(sql, params, new ProductsMapper());
+
+		if(results.size() == 0) 
+		{ return null; }
 		
-		return size;
+		Product product = results.get(0);
+		
+		return product;
+	}
+
+	@Override
+	public List<Product> getAllProducts() 
+	{
+		Map<String, Object> params = new HashMap<String, Object>();
+
+		String sql = "SELECT products.id,name,price,stock,description,image,itemSizes.size,category FROM products "
+				+ "INNER JOIN itemSizes ON itemSizes.id = products.size "
+				+ "INNER JOIN itemTypes ON itemTypes.id = products.type ";
+
+		List<Product> results = namedParameterJdbcTemplate.query(sql, params, new ProductsMapper());
+
+		if(results.size() == 0) 
+		{ return null; }
+		
+		return results;
+	}
+
+	@Override
+	public List<Product> getProductsOfType(String type) 
+	{
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("type", type);
+
+		String sql = "SELECT products.id,name,price,stock,description,image,itemSizes.size,category FROM products "
+				+ "WHERE itemTypes.category = :type "
+				+ "INNER JOIN itemSizes ON itemSizes.id = products.size "
+				+ "INNER JOIN itemTypes ON itemTypes.id = products.type ";
+
+		List<Product> results = namedParameterJdbcTemplate.query(sql, params, new ProductsMapper());
+
+		if(results.size() == 0) 
+		{ return null; }
+		
+		return results;
+	}
+
+	@Override
+	public List<Product> getProductsOfSize(String size) 
+	{
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("size", size);
+
+		String sql = "SELECT products.id,name,price,stock,description,image,itemSizes.size,category FROM products "
+				+ "WHERE itemSizes.size = :size "
+				+ "INNER JOIN itemSizes ON itemSizes.id = products.size "
+				+ "INNER JOIN itemTypes ON itemTypes.id = products.type ";
+
+		List<Product> results = namedParameterJdbcTemplate.query(sql, params, new ProductsMapper());
+
+		if(results.size() == 0) 
+		{ return null; }
+		
+		return results;
+	}
+
+	@Override
+	public List<Product> getProductsOutOfStock() 
+	{
+		Map<String, Object> params = new HashMap<String, Object>();
+		String sql = "SELECT products.id,name,price,stock,description,image,itemSizes.size,category FROM products "
+				+ "WHERE products.stock<=0 "
+				+ "INNER JOIN itemSizes ON itemSizes.id = products.size "
+				+ "INNER JOIN itemTypes ON itemTypes.id = products.type ";
+
+		List<Product> results = namedParameterJdbcTemplate.query(sql, params, new ProductsMapper());
+
+		if(results.size() == 0) 
+		{ return null; }
+		return results;
 	}
 	
-	//utility function to get type from db
 }
