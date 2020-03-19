@@ -42,6 +42,7 @@ public class AppConfig implements WebMvcConfigurer {
 
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+		registry.addResourceHandler("/img/**").addResourceLocations("/img/");
 	}
 	
 	
