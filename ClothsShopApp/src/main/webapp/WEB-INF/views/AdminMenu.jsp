@@ -29,6 +29,7 @@
 	</div>
 	<div class="container">
 		<div class="col-md-offset-2 col-md-7">
+		<a href = "show-products">Product List</a>
 			<a href="logout">Log out</a>
 		</div>
 	</div>
