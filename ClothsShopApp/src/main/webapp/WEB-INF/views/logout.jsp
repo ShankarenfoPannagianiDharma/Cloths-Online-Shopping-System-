@@ -18,6 +18,8 @@
 	<div class="container">
 		<p>Logged out. Thank you for visiting.</p>
 		<a href="login">Proceed</a>
+		<a href = "show-products">Product List</a>
+		
 	</div>
 </body>
 </html>
