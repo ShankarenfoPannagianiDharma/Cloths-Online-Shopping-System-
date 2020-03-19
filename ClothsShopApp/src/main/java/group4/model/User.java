@@ -1,5 +1,7 @@
 package group4.model;
 
+import java.util.List;
+
 //This model describes the user
 
 public class User {
@@ -7,6 +9,15 @@ public class User {
 	private String userName;
 	private String password;
 	private int admin;
+	private List<Product> selectedProducts;
+
+	public List<Product> getSelectedProducts() {
+		return selectedProducts;
+	}
+	
+	public void setSelectedProducts(List<Product> selectedProduct) {
+		this.selectedProducts = selectedProduct;
+	}
  
 	public String getEmail() {
 		return email;
@@ -42,4 +53,6 @@ public class User {
 		{return true;}
 		return false;
 	}
+
+	
 }
