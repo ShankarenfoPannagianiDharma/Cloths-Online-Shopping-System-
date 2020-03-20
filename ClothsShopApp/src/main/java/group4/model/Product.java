@@ -26,12 +26,6 @@ public class Product
 	public void setProductName(String productName) {
 		this.productName = productName;
 	}
-	public String getType() {
-		return productType;
-	}
-	public void setType(String type) {
-		this.productType = type;
-	}
 	public int getStock() {
 		return stock;
 	}
@@ -61,6 +55,12 @@ public class Product
 	}
 	public void setProductID(int productID) {
 		this.productID = productID;
+	}
+	public String getProductType() {
+		return productType;
+	}
+	public void setProductType(String productType) {
+		this.productType = productType;
 	}
 
 }

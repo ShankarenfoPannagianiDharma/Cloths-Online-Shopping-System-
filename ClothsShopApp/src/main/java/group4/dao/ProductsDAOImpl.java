@@ -36,7 +36,7 @@ public class ProductsDAOImpl implements ProductsDAO {
 			item.setImgURL(rs.getString("image"));
 			item.setPrice(rs.getDouble("price"));
 			item.setProductSize( rs.getString("size") );
-			item.setType( rs.getString("category") );
+			item.setProductType( rs.getString("category") );
 			item.setStock(rs.getInt("stock"));
 			return item;
 		}
@@ -49,9 +49,9 @@ public class ProductsDAOImpl implements ProductsDAO {
 		params.put("id", targetID);
 
 		String sql = "SELECT products.id,name,price,stock,description,image,itemSizes.size,category FROM products "
-				+ "WHERE products.id=:id "
 				+ "INNER JOIN itemSizes ON itemSizes.id = products.size "
-				+ "INNER JOIN itemTypes ON itemTypes.id = products.type ";
+				+ "INNER JOIN itemTypes ON itemTypes.id = products.type "
+				+ "WHERE products.id=:id ";
 
 		List<Product> results = namedParameterJdbcTemplate.query(sql, params, new ProductsMapper());
 
@@ -87,9 +87,9 @@ public class ProductsDAOImpl implements ProductsDAO {
 		params.put("type", type);
 
 		String sql = "SELECT products.id,name,price,stock,description,image,itemSizes.size,category FROM products "
-				+ "WHERE itemTypes.category = :type "
 				+ "INNER JOIN itemSizes ON itemSizes.id = products.size "
-				+ "INNER JOIN itemTypes ON itemTypes.id = products.type ";
+				+ "INNER JOIN itemTypes ON itemTypes.id = products.type "
+				+ "WHERE itemTypes.category = :type ";
 
 		List<Product> results = namedParameterJdbcTemplate.query(sql, params, new ProductsMapper());
 
@@ -106,9 +106,9 @@ public class ProductsDAOImpl implements ProductsDAO {
 		params.put("size", size);
 
 		String sql = "SELECT products.id,name,price,stock,description,image,itemSizes.size,category FROM products "
-				+ "WHERE itemSizes.size = :size "
 				+ "INNER JOIN itemSizes ON itemSizes.id = products.size "
-				+ "INNER JOIN itemTypes ON itemTypes.id = products.type ";
+				+ "INNER JOIN itemTypes ON itemTypes.id = products.type "
+				+ "WHERE itemSizes.size = :size ";
 
 		List<Product> results = namedParameterJdbcTemplate.query(sql, params, new ProductsMapper());
 
@@ -123,9 +123,9 @@ public class ProductsDAOImpl implements ProductsDAO {
 	{
 		Map<String, Object> params = new HashMap<String, Object>();
 		String sql = "SELECT products.id,name,price,stock,description,image,itemSizes.size,category FROM products "
-				+ "WHERE products.stock<=0 "
 				+ "INNER JOIN itemSizes ON itemSizes.id = products.size "
-				+ "INNER JOIN itemTypes ON itemTypes.id = products.type ";
+				+ "INNER JOIN itemTypes ON itemTypes.id = products.type "
+				+ "WHERE products.stock<=0 ";
 
 		List<Product> results = namedParameterJdbcTemplate.query(sql, params, new ProductsMapper());
 

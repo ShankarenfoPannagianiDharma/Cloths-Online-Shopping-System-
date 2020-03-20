@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import group4.model.Product;
 import group4.model.User;
 
 @Repository
@@ -80,6 +81,14 @@ public class UserDAOImpl implements UserDAO {
 			usr.setAdmin(rs.getString("admin"));
 			return usr;
 		}
+	}
+
+	//get products selected by user
+	@Override
+	public List<Product> findSelectedProducts(String email) 
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

@@ -54,7 +54,7 @@ public class OrdersDAOImpl implements OrdersDAO
 			item.setImgURL(rs.getString("image"));
 			item.setPrice(rs.getDouble("price"));
 			item.setProductSize( rs.getString("size") );
-			item.setType( rs.getString("category") );
+			item.setProductType( rs.getString("category") );
 			item.setStock( rs.getInt("amount") );
 			return item;
 		}

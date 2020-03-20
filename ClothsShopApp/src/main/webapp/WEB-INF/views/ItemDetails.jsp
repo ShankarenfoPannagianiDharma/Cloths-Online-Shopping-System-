@@ -12,7 +12,7 @@
 	rel="stylesheet" />
 <link href="<c:url value="/resources/css/pc_home.css"/>"
 	rel="stylesheet" />
-<link href="<c:url value="/resources/css/pc_styles1.css?v=12423122"/>"
+<link href="<c:url value="/resources/css/pc_styles1.css?v=098765"/>"
 	rel="stylesheet" />
 
 <script src="<c:url value="/resources/js/jquery-1.11.1.min.js" />"></script>
@@ -20,18 +20,11 @@
 <%@ page isELIgnored="false"%>
 </head>
 <body>
+	<!-- Header -->
 	<div class="container">
 		<div class="col-md-offset-2 col-md-7">
-			<h1>This is the main menu. You are NOT an admin.</h1>
+			<h1>${product.productName}</h1>
 			<hr />
-			<table class="table table-striped table-bordered">
-				<tr>
-					<td><b>Email </b>: ${user.email}</td>
-				</tr>
-				<tr>
-					<td><b>Name </b> : ${user.userName}</td>
-				</tr>
-			</table>
 		</div>
 	</div>
 	<!-- Header: horizontal ul li for navigation & controls -->
@@ -41,19 +34,19 @@
 		<li><a href="account">Account</a></li>
 		<li><a href="logout">Log Out</a></li>
 	</ul>
-
-	<!-- Display: All items in stock -->
-	<div class="grid-container">
-		<!-- Each slot links to the page itemDetail?id=[productID] -->
-		<c:forEach var="product" items="${allProducts}">
-			<div class="grid-slot">
-				<a href="/itemDetail?id=${product.productID}">					
-					<img src="<c:url value="/resources/img/${product.imgURL}"/>" alt="imgNOTFOUND"> <!-- image -->
-					${product.productName}<!-- name -->
-				</a>
-			</div>
-		</c:forEach>
+	
+	<!-- display the item -->
+	<div class="displayLeft">
+		<h2>${targetProduct.productName}</h2>
+		Type  : ${targetProduct.productType}<br>
+		Size  : ${targetProduct.productSize}<br>
+		Price : $${targetProduct.price}<br>
+		Stock : ${targetProduct.stock}<br>
+		Description:<br>${targetProduct.description}<br><br>
+		
 	</div>
-
+	<div class="displayRight">
+		<img src="<c:url value="/resources/img/${targetProduct.imgURL}"/>" alt="imgNOTFOUND">
+	</div>
 </body>
 </html>

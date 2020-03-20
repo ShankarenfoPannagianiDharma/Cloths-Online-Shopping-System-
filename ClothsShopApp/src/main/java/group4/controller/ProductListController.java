@@ -60,9 +60,9 @@ public class ProductListController {
 			}
 		}
 		
-		if(userDao.selectedProductByProductID(user.getEmail(),productId) > 0) {
+		/*if(userDao.selectedProductByProductID(user.getEmail(),productId) > 0) {
 			user.setSelectedProducts(userDao.findSelectedProducts(user.getEmail()));
-		}
+		}*/
 		
 		return "redirect:login";
 	}

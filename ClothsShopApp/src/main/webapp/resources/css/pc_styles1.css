@@ -1,0 +1,171 @@
+@charset "utf-8";
+
+@font-face {
+	font-family: Champagne;
+	src: url(cac_champagne.woff) format('woff'),
+	     url(cac_champagne.ttf) format('ttf');
+}
+
+/*
+   New Perspectives on HTML5 and CSS3, 7th Edition
+   Tutorial 3
+   Tutorial Case
+   
+   Typography and Color Styles for pc_home.html
+   
+   Filename: pc_styles1.css
+
+*/
+
+/* HTML */
+
+html {
+   background-color: rgb(221, 83, 19);
+   font-family: Verdana, Geneva, Arial, sans-serif; 	
+}
+
+hr{
+	border: none;	
+}
+
+body {
+   background-color: rgb(121, 65, 12);  
+}
+
+
+/* Horizontal Navigation Styles */
+
+nav.horizontalNavigation a {
+   background-color: rgb(121, 65, 12);
+   font-family: Champagne, cursive;
+   font-size: 1.4em;
+   line-height: 1.8em;
+   text-align: center;
+}  
+
+nav.horizontalNavigation a:link, 
+nav.horizontalNavigation a:visited {
+   color: rgb(239, 220, 156);
+}
+
+nav.horizontalNavigation a:hover, 
+nav.horizontalNavigation a:active {
+   background-color: rgb(223, 118, 20);
+}   
+
+
+/* Left Column Paragraph Styles */
+
+section#leftColumn p {
+   color: rgb(248, 248, 186);
+   font-size: 0.9em;
+   line-height: 1.6em;
+}
+
+
+/* Footer Styles */
+
+body > footer {
+   font-size: 0.9em;
+   color: rgb(186, 186, 156);
+}
+
+body > footer h1 {
+   color: rgb(248, 248, 186);
+   font-size: 1.1em;
+   font-weight: normal;
+   letter-spacing: 0.2em;
+   margin: 1em 0 0.5em 1em;
+}
+
+/* Vertical Navigation Styles */
+
+nav.verticalNavigation ul {
+   margin-left: 1em;
+   line-height: 2em;
+}
+
+nav.verticalNavigation a:link, 
+nav.verticalNavigation a:visited {
+   color: rgb(186, 186, 156);
+}
+
+nav.verticalNavigation a:hover, 
+nav.verticalNavigation a:active {
+   text-decoration: underline;
+}
+
+/* Contact Info Styles */
+
+section#contactInfo p {
+   line-height: 1.4em;
+   margin: 1em;
+}   
+
+ul.control-menu {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333333;
+}
+
+ul.control-menu li {
+  float: left;
+}
+
+ul.control-menu li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 16px;
+  text-decoration: none;
+}
+
+ul.control-menu li a:hover {
+  background-color: #111111;
+}
+
+
+/* Grid css for main user menu */
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto auto; 
+  grid-gap: 10px;
+  background-color: #2196F3;
+  padding: 10px;
+}
+
+.grid-slot {
+  background-color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  padding: 20px 0;
+  font-size: 30px;
+}
+
+.grid-slot a img {
+	height: 120px;
+	width: 120px;
+  object-fit:cover;
+}
+
+
+/* Css for item details */
+div.displayLeft{
+	display:block;
+	width:60%;
+  	background-color: #0080ff;
+  	height:400px;
+  	float:left;
+  	padding:15px;
+}
+div.displayRight{
+	display:block;
+	width:40%;
+  	background-color: #000080;
+  	float:left;
+}
+div.displayRight img{
+	object-fit:cover;
+	max-height: 400px;
+}

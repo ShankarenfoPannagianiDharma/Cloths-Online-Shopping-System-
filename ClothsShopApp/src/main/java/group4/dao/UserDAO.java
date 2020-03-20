@@ -12,11 +12,10 @@ public interface UserDAO {
 	
      //int selectedProductByProductID(String email, int productId);
 	
-      List<Product> findSelectedProducts(String email);
+	//get products selected by user
+    List<Product> findSelectedProducts(String email);
 	
 	List<User> GetAllUsers();
-
-	int selectedProductByProductID(String email, int productId);
 
 	//List<Product> findSelectedProducts(String email); 
 }
