@@ -1,3 +1,6 @@
+<%@ include file="common/header.jspf"%>
+<%@ include file="common/navigation.jspf"%>
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
@@ -7,7 +10,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Student Login</title>
+<title>This is from logout.jsp</title>
 <link href="<c:url value="/resources/css/bootstrap.min.css" />"
 	rel="stylesheet">
 <script src="<c:url value="/resources/js/jquery-1.11.1.min.js" />"></script>
@@ -17,7 +20,8 @@
 <body>
 	<div class="container">
 		<p>Logged out. Thank you for visiting.</p>
-		<a href="login">Proceed</a>
+		<a href="/">Proceed</a>
 	</div>
 </body>
 </html>
+<%@ include file="common/footer.jspf"%>

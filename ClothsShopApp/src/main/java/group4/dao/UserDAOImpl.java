@@ -75,6 +75,7 @@ public class UserDAOImpl implements UserDAO {
 		public User mapRow(ResultSet rs, int rowNum) throws SQLException 
 		{
 			User usr = new User();
+			usr.setId(rs.getInt("id"));
 			usr.setUserName(rs.getString("username"));
 			usr.setEmail(rs.getString("email"));
 			usr.setPassword(rs.getString("password"));

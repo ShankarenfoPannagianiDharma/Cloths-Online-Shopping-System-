@@ -1,9 +1,11 @@
-insert into users (id, email, username, password, admin) values (1, 'cgellan0@free.fr', 'Cherye Gellan', 'oK75gG', 0);
-insert into users (id, email, username, password, admin) values (2, 'rberkely1@unesco.org', 'Raviv Berkely', 'gzJmsue4DW', 1);
-insert into users (id, email, username, password, admin) values (3, 'vizzard2@vistaprint.com', 'Vicki Izzard', '6DRAnAv', 1);
-insert into users (id, email, username, password, admin) values (4, 'lbambrough3@sina.com.cn', 'Lissi Bambrough', 'FiRGuMX', 1);
-insert into users (id, email, username, password, admin) values (5, 'ncraft4@ft.com', 'Nisse Craft', 'xUsSU8F', 0);
-insert into users (id, email, username, password, admin) values (6, 'pkinnock5@constantcontact.com', 'Pail Kinnock', 'inxPj9XU0d', 0);
+-- first 2 is test account 
+insert into users (id, email, username, password, admin) values (1, 'user', 'Cherye Gellan', '1', FALSE);
+insert into users (id, email, username, password, admin) values (2, 'admin', 'Raviv Berkely', '1', TRUE);
+-- 
+insert into users (id, email, username, password, admin) values (3, 'vizzard2@vistaprint.com', 'Vicki Izzard', '6DRAnAv', FALSE);
+insert into users (id, email, username, password, admin) values (4, 'lbambrough3@sina.com.cn', 'Lissi Bambrough', 'FiRGuMX', FALSE);
+insert into users (id, email, username, password, admin) values (5, 'ncraft4@ft.com', 'Nisse Craft', 'xUsSU8F', FALSE);
+insert into users (id, email, username, password, admin) values (6, 'pkinnock5@constantcontact.com', 'Pail Kinnock', 'inxPj9XU0d', FALSE);
 
 insert into itemtypes (id, category) values (1, 'Shirts');
 insert into itemtypes (id, category) values (2, 'Shorts');
@@ -35,18 +37,18 @@ insert into orders (id, customerid, destination) values (3, 3, '23023 Delaware D
 insert into orders (id, customerid, destination) values (4, 4, '637 Straubel Park');
 insert into orders (id, customerid, destination) values (5, 5, '4 Hermina Center');
 insert into orders (id, customerid, destination) values (6, 6, '533 Norway Maple Drive');
-insert into orders (id, customerid, destination) values (7, 1, '6354 Barnett Plaza');
-insert into orders (id, customerid, destination) values (8, 2, '404 Lillian Avenue');
-insert into orders (id, customerid, destination) values (9, 3, '0 Oneill Point');
-insert into orders (id, customerid, destination) values (10, 4, '093 Di Loreto Center');
+insert into orders (id, customerid, destination) values (7, 1, '4290 Cardinal Road');
+insert into orders (id, customerid, destination) values (8, 2, '313 Acker Hill');
+insert into orders (id, customerid, destination) values (9, 3, '23023 Delaware Drive');
+insert into orders (id, customerid, destination) values (10, 4, '637 Straubel Park');
 
-insert into orderdetails (orderid, itemid, amount, price) values (1, 1, 6, 28.13);
-insert into orderdetails (orderid, itemid, amount, price) values (8, 7, 7, 27.19);
-insert into orderdetails (orderid, itemid, amount, price) values (1, 7, 3, 24.09);
-insert into orderdetails (orderid, itemid, amount, price) values (6, 7, 2, 22.56);
-insert into orderdetails (orderid, itemid, amount, price) values (3, 5, 5, 18.20);
-insert into orderdetails (orderid, itemid, amount, price) values (6, 1, 1, 26.44);
-insert into orderdetails (orderid, itemid, amount, price) values (5, 2, 5, 22.95);
-insert into orderdetails (orderid, itemid, amount, price) values (5, 7, 3, 12.90);
-insert into orderdetails (orderid, itemid, amount, price) values (4, 3, 8, 19.52);
-insert into orderdetails (orderid, itemid, amount, price) values (8, 8, 6, 26.08);
+insert into orderdetails (orderid, itemid, amount, price) values (1, 1, 6, 0);
+insert into orderdetails (orderid, itemid, amount, price) values (8, 7, 7, 0);
+insert into orderdetails (orderid, itemid, amount, price) values (1, 7, 3, 0);
+insert into orderdetails (orderid, itemid, amount, price) values (6, 7, 2, 0);
+insert into orderdetails (orderid, itemid, amount, price) values (3, 5, 5, 0);
+insert into orderdetails (orderid, itemid, amount, price) values (6, 1, 1, 0);
+insert into orderdetails (orderid, itemid, amount, price) values (5, 2, 5, 0);
+insert into orderdetails (orderid, itemid, amount, price) values (5, 7, 3, 0);
+insert into orderdetails (orderid, itemid, amount, price) values (4, 3, 8, 0);
+insert into orderdetails (orderid, itemid, amount, price) values (8, 8, 6, 0);

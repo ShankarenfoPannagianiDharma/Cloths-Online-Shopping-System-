@@ -53,8 +53,10 @@ public class LoginController {
 	    if(user != null) 
 	    {
 	    	if(user.isAdmin())
-	    	{ return "AdminMenu"; }
-	    	return "redirect:Menu";
+	    	{ 
+	    		return "AdminMenu"; 
+	    	}
+	    	return "redirect:index";
 	    }
 	   
 	    //get list of available users
@@ -64,17 +66,31 @@ public class LoginController {
 	}
 	
 	@GetMapping("/logout")
-	public String logout(HttpSession session) 
+	public String logout(HttpSession session, Model model) 
 	{
 		//removes session stored
 	    User user = (User) session.getAttribute("user");
 	    if(user != null) {
+	    	model.addAttribute("user", null);
 	    	session.setAttribute("user", null);
 	    	session.removeAttribute("user");
 	    }
+	    System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 	    return "logout";
 	}
-
+	
+	//#Bao
+		@GetMapping("/AdminMenu")
+		public String adminLogin(HttpSession session, Model model) 
+		{
+			//if there is a user session already
+		    User user = (User) session.getAttribute("user");
+		    //get list of available users
+		    List<User> users = userDao.GetAllUsers();
+		    model.addAttribute("allUsers", users);
+		    return "AdminMenu";
+		}
+	
 	@PostMapping("/login") 
 	public String login(@ModelAttribute("loginInfo") LoginInfo loginInfo, Model model)
 	{
@@ -86,8 +102,11 @@ public class LoginController {
 			model.addAttribute("message", "Login Successful");
 			if(user.isAdmin())
 			{return "redirect:AdminMenu";}
-			return "redirect:Menu";
+			return "redirect:";
 		}
+		//#Bao get list of available users
+		List<User> users = userDao.GetAllUsers();
+	    model.addAttribute("allUsers", users);
 		return "login";
 	}
 	

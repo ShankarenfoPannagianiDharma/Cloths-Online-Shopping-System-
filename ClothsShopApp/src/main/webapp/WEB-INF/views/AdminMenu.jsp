@@ -1,37 +1,40 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>javaguides.net</title>
-<link href="<c:url value="/resources/css/bootstrap.min.css" />"
-	rel="stylesheet">
-<script src="<c:url value="/resources/js/jquery-1.11.1.min.js" />"></script>
-<script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
-<%@ page isELIgnored="false"%>
-</head>
-<body>
-	<div class="container">
-		<div class="col-md-offset-2 col-md-7">
-			<h1>This is the admin menu. You are an admin.</h1>
-			<hr />
-			<table class="table table-striped table-bordered">
-				<tr>
-					<td><b>Email </b>: ${user.email}</td>
-				</tr>
-				<tr>
-					<td><b>Name </b> : ${user.userName}</td>
-				</tr>
-			</table>
+<%@ include file="common/header.jspf"%>
+<%@ include file="common/navigation.jspf"%>
+<div>
+<h1>This is ADMIN.JSP</h1>
+<div class="container">
+	<div class="col-md-offset-2 col-md-7">
+		<h2 class="text-center">List of User: ${message}</h2>
+		<div class="panel panel-info">
+			<div class="panel-body">
+				<form:form action="login" cssClass="form-horizontal" method="post"
+					modelAttribute="LoginInfo">
+					
+					<!-- Display utility: all users -->
+					<p>Available user accounts:</p>
+					<table class="table table-striped table-bordered">
+							<tr>
+								<td>name</td>
+								<td>password</td>
+								<td>email</td>
+								<!--#bao Display if admin -->
+								<td>Admin ???</td>
+							</tr>
+						<c:forEach var="users" items="${allUsers}">
+							<tr>
+								<td>${users.userName}</td>
+								<td>${users.password}</td>
+								<td>${users.email}</td>
+								<!--#bao Display if admin -->
+								<td>(${users.admin})</td>
+							</tr>
+						</c:forEach>
+
+					</table>
+
+				</form:form>
+			</div>
 		</div>
 	</div>
-	<div class="container">
-		<div class="col-md-offset-2 col-md-7">
-		<a href = "show-products">Product List</a>
-			<a href="logout">Log out</a>
-		</div>
-	</div>
-</body>
-</html>
+</div>
+<%@ include file="common/footer.jspf"%>

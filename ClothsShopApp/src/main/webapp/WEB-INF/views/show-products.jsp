@@ -1,47 +1,52 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>javaguides.net</title>
-<link href="<c:url value="/resources/css/bootstrap.min.css" />"
-	rel="stylesheet">
-<script src="<c:url value="/resources/js/jquery-1.11.1.min.js" />"></script>
-<script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
-<%@ page isELIgnored="false"%>
-</head>
-<body>
-<div class="container">
-		<div class="col-md-offset-2 col-md-7">
-			<h1>Product List</h1>
-			${message}
-			<hr />
-			<form:form action="selectedProduct" cssClass="form-horizontal"
-				method="post" modelAttribute="product" id="productSelectedForm">
-				<form:hidden path="productID" cssClass="form-control" />
-				<form:hidden path="productName" cssClass="form-control" />
-				<form:hidden path="price" cssClass="form-control" />
-				<form:hidden path="productType" cssClass="form-control" />
-				<form:hidden path="stock" cssClass="form-control" />
-				<form:hidden path="productSize" cssClass="form-control" />
-				<form:hidden path="description" cssClass="form-control" />
-				<form:hidden path="imgURL" cssClass="form-control" />
-				<table class="table table-striped table-bordered">
-					<c:forEach var="product" items="${products}">
-						<tr>
-							<td>${product.productID} ${product.name}${product.price}${product.productType}${product.stock}${product.productSize}${product.description}${product.imgURL}</td> 
-							<td><a href="#" onclick="document.getElementById('productID').value='${product.productID}';document.getElementById('productName').value='${product.productName}';
-							document.getElementById('price').value='${product.price}';document.getElementById('productType').value='${product.productType}';document.getElementById('stock').value='${product.stock}';
-							document.getElementById('productSize').value='${product.productSize}';document.getElementById('description').value='${product.description}';document.getElementById('imgURL').value='${product.imgURL}';
-							document.getElementById('productSelectedForm').submit();">Selected</a></td>
-						</tr>
-					</c:forEach>
+<%@ include file="common/header.jspf"%>
+<%@ include file="common/navigation.jspf"%>
 
-				</table>
-			</form:form>
+<div class="container">
+	<div class="row">
+		<h1>Product List</h1>
+		${message}
+		<hr />
+		<!-- Display: All items in stock -->
+		<div class="grid-container">
+			<div class="col">
+				<div class="row">
+					<!-- Each slot links to the page itemDetail?id=[productID] -->
+					<c:forEach var="product" items="${products}">
+
+						<div class="col-12 col-md-6 col-lg-4">
+							<div class="card">
+								<img class="card-img-top"
+									src="<c:url value="/resources/img/${product.imgURL}"/>"
+									alt="Card image cap">
+								<div class="card-body">
+									<h4 class="card-title">
+										<a href="/product/itemDetail?id=${product.productID}">
+											${product.productName}</a>
+									</h4>
+									<p class="card-text">Some quick example text to build on
+										the card title and make up the bulk of the card's content.</p>
+									<div class="row">
+										<div class="col">
+											<p class="btn btn-danger btn-block">${product.price}</p>
+										</div>
+										<div class="col">
+											<form:form action="addToCart" cssClass="form-horizontal"
+												method="post" modelAttribute="Product">
+												<button type="submit" class="btn btn-success btn-block">Add
+													to cart</button>
+												<form:input type="hidden" path="productID"
+													value="${product.productID}" />
+											</form:form>
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</c:forEach>
+				</div>
+			</div>
 		</div>
 	</div>
-
-</body>
-</html>
+</div>
+<%@ include file="common/footer.jspf"%>

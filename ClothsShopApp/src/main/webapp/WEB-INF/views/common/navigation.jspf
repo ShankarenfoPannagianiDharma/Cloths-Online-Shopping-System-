@@ -1,0 +1,14 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<c:choose>
+	<c:when test="${user==null}">
+		<%@ include file="navigation/navigationnologin.jspf"%>
+	</c:when>
+	<c:when test="${user.isAdmin()}">
+		<%@ include file="navigation/navigationadmin.jspf"%>
+	</c:when>
+	<c:otherwise>
+		<%@ include file="navigation/navigationlogin.jspf"%>
+	</c:otherwise>
+
+</c:choose>

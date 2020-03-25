@@ -5,11 +5,22 @@ import java.util.List;
 //This model describes the user
 
 public class User {
+	private int id;
 	private String email;
 	private String userName;
 	private String password;
 	private int admin;
 	private List<Product> selectedProducts;
+
+	
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	public List<Product> getSelectedProducts() {
 		return selectedProducts;

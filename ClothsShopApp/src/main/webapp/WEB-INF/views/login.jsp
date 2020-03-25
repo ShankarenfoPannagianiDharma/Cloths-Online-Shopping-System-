@@ -1,65 +1,59 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page isELIgnored="false"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Student Login</title>
-<link href="<c:url value="/resources/css/bootstrap.min.css" />"
-	rel="stylesheet">
-<script src="<c:url value="/resources/js/jquery-1.11.1.min.js" />"></script>
-<script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
+<%@ include file="common/header.jspf"%>
+<%@ include file="common/navigation.jspf"%>
 
-</head>
-<body>
-	<div class="container">
-		<div class="col-md-offset-2 col-md-7">
-			<h2 class="text-center">Student Login: ${message}</h2>
-			<div class="panel panel-info">
-				<div class="panel-body">
-					<form:form action="login" cssClass="form-horizontal" method="post"
-						modelAttribute="LoginInfo">
+<div class="container">
+	<div class="col-md-offset-2 col-md-7">
+		<h2 class="text-center">User Login: ${message}</h2>
+		<div class="panel panel-info">
+			<div class="panel-body">
+				<form:form action="login" cssClass="form-horizontal" method="post"
+					modelAttribute="LoginInfo">
 
-						<div class="form-group">
-							<label for="email" class="col-md-3 control-label">email</label>
-							<div class="col-md-9">
-								<form:input path="email" cssClass="form-control" />
-							</div>
+					<div class="form-group">
+						<label for="email" class="col-md-3 control-label">email</label>
+						<div class="col-md-9">
+							<form:input path="email" cssClass="form-control" />
 						</div>
-						<div class="form-group">
-							<label for="password" class="col-md-3 control-label">Password</label>
-							<div class="col-md-9">
-								<form:password path="password" cssClass="form-control" />
-							</div>
+					</div>
+					<div class="form-group">
+						<label for="password" class="col-md-3 control-label">Password</label>
+						<div class="col-md-9">
+							<form:password path="password" cssClass="form-control" />
 						</div>
+					</div>
 
-						<div class="form-group">
-							<!-- Button -->
-							<div class="col-md-offset-3 col-md-9">
-								<form:button cssClass="btn btn-primary">Submit</form:button>
-							</div>
+					<div class="form-group">
+						<!-- Button -->
+						<div class="col-md-offset-3 col-md-9">
+							<form:button cssClass="btn btn-primary">Submit</form:button>
 						</div>
+					</div>
 
-						<!-- Display utility: all users -->
-						<p>Available user accounts:</p>
-						<table class="table table-striped table-bordered">
-							<c:forEach var="users" items="${allUsers}">
-								<tr>
-									<td>${users.userName}</td>
-									<td>${users.password}</td>
-									<td>${users.email}</td>
-								</tr>
-							</c:forEach>
+					<!-- Display utility: all users -->
+					<p>Available user accounts:</p>
+					<table class="table table-striped table-bordered">
+							<tr>
+								<td>name</td>
+								<td>password</td>
+								<td>email</td>
+								<!--#bao Display if admin -->
+								<td>Admin ???</td>
+							</tr>
+						<c:forEach var="users" items="${allUsers}">
+							<tr>
+								<td>${users.userName}</td>
+								<td>${users.password}</td>
+								<td>${users.email}</td>
+								<!--#bao Display if admin -->
+								<td>(${users.admin})</td>
+							</tr>
+						</c:forEach>
 
-						</table>
+					</table>
 
-					</form:form>
-				</div>
+				</form:form>
 			</div>
 		</div>
 	</div>
-</body>
-</html>
+</div>
+<%@ include file="common/footer.jspf"%>
