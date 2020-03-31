@@ -5,6 +5,7 @@ public class OrderDetail {
 	private int orderid;
 	private int itemid;
 	private int amount;
+	private double price;	//price of product at time of sale
 	
 	
 
@@ -39,5 +40,18 @@ public class OrderDetail {
 	public void setAmount(int amount) {
 		this.amount = amount;
 	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double cost) {
+		this.price = cost;
+	}
+	
+
+	//methods for utility
+	public void incrementAmount() 
+	{amount++;}
 
 }

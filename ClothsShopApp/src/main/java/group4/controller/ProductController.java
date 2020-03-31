@@ -1,5 +1,6 @@
 package group4.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 import group4.dao.UserDAO;
 import group4.dao.OrdersDAO;
@@ -21,7 +21,8 @@ import group4.model.*;
 
 @Controller
 @RequestMapping("/product")
-public class ProductController {
+public class ProductController 
+{
 
 	@Autowired
 	UserDAO userDao;
@@ -55,24 +56,55 @@ public class ProductController {
 		if (user == null) {
 			return "redirect:login";
 		}
-		List<Order> orders = ordersDao.getCustomersOrders(user.getId());
-		List<OrderDetail> orderdetail = ordersDao.getOrderDetail(orders.get(orders.size() - 1).getOrderID(),
-				user.getId());
+		
+		//TODO: Display session cart
+		//get cart from session
+		List<OrderDetail> cartItems = user.getSelectedProducts();
+		model.addAttribute("orderdetail",cartItems);
+		//add cart information
+		model.addAttribute("orderAmount", user.getOrderItemCounts());
+		model.addAttribute("orderCost", user.getOrderTotalCosts());	
 
-		model.addAttribute("orderdetail", orderdetail);
+		//model.addAttribute("orderdetail", orderdetail);
 		return "cart";
 	}
 	
-	@PostMapping("/addToCart")
+	//add to cart button triggers this post mapping- contains Product object with only ID.
+		@PostMapping("/addToCart")            //product from form is in this model
 	public String selected(HttpSession session, @ModelAttribute("Product") Product product, Model model) {
 		User user = (User) session.getAttribute("user");
 		int productId = product.getProductID();
 
-		List<Order> orders = ordersDao.getCustomersOrders(user.getId());
+		//(PLACEHOLDER) get order of customer -> add item to cart
+		//List<Order> orders = ordersDao.getCustomersOrders(user.getId());
+		//ordersDao.addCartItem(orders.get(orders.size() - 1).getOrderID(), productId, user.getId());
+		
+		//get session attribute: cart
+		List<OrderDetail> userCart = (List<OrderDetail>) user.getSelectedProducts();
+		//if cart doesn't exist, add new list
+		if(userCart == null)
+		{userCart = new ArrayList<OrderDetail>();}
+		//add the selected item to cart
+		//catch: does item already exist in list?
+		OrderDetail item = user.itemInCart(productId);
+		if(item != null)
+		{
+			//if true, increment the order amount.
+			item.incrementAmount();
+		}
+		else
+		{
+			OrderDetail orderDItem = new OrderDetail();
+			orderDItem.setItemid(productId);
+			orderDItem.setAmount(1);
+			orderDItem.setPrice(productsDao.getProductCost(productId));
+			userCart.add(orderDItem);
+		}
+		//save changes? is this line necessary?
+		user.setSelectedProducts(userCart);
 
-		ordersDao.addCartItem(orders.get(orders.size() - 1).getOrderID(), productId, user.getId());
-
-		return "redirect:cart";
+		//model.addAttribute("message", "Item added to cart.");
+		return "redirect:list";
 	}
 
 	// Control for productDetails: when an item is selected --> HAS GET PARAM
@@ -93,6 +125,7 @@ public class ProductController {
 	}
 	
 	//#Bao
+	//TODO: make obsolete. Should not be a thing
 	@GetMapping("/newCart")
 	public String newCart(HttpSession session, Model model) {
 		User user = (User) session.getAttribute("user");

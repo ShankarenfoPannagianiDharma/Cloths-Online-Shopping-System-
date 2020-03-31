@@ -128,4 +128,32 @@ public class ProductsDAOImpl implements ProductsDAO {
 		return results;
 	}
 
+	//check if productID has stock
+	@Override
+	public boolean hasStock(int productId) 
+	{
+		Product target = getProductFromId(productId);
+		
+		if(target == null)
+		{return false;}
+		
+		//check if result has stock 
+		if(target.getStock() > 0)
+		{return true;}
+		else
+		{return false;}
+	}
+
+	//get the cost of target product id
+	@Override
+	public double getProductCost(int productId) 
+	{
+		Product target = getProductFromId(productId);
+		
+		if(target == null)
+		{return 0;}
+		
+		return target.getPrice();
+	}
+
 }

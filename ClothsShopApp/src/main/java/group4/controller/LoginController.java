@@ -75,7 +75,6 @@ public class LoginController {
 	    	session.setAttribute("user", null);
 	    	session.removeAttribute("user");
 	    }
-	    System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 	    return "logout";
 	}
 	
@@ -104,6 +103,8 @@ public class LoginController {
 			{return "redirect:AdminMenu";}
 			return "redirect:";
 		}
+		
+		//login failed
 		//#Bao get list of available users
 		List<User> users = userDao.GetAllUsers();
 	    model.addAttribute("allUsers", users);

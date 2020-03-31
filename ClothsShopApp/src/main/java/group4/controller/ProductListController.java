@@ -53,12 +53,12 @@ public class ProductListController {
 		User user = (User) session.getAttribute("user");
 		int productId = product.getProductID();
 		
-		for(Product p : user.getSelectedProducts()) {
-			if(p.getProductID() == productId) {
+		/*for(OrderDetail p : user.getSelectedProducts()) {
+			if(p.getItemid()() == productId) {
 				model.addAttribute("message", "Product already selected.");
 				return "redirect:showProducts";
 			}
-		}
+		}*/
 		
 		/*if(userDao.selectedProductByProductID(user.getEmail(),productId) > 0) {
 			user.setSelectedProducts(userDao.findSelectedProducts(user.getEmail()));

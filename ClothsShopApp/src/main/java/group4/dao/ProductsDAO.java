@@ -16,4 +16,8 @@ public interface ProductsDAO
 	Product getProductFromId(int targetID);
 	
 	List<Product> getProductsOutOfStock();
+
+	boolean hasStock(int productId);
+
+	double getProductCost(int productId);
 }
