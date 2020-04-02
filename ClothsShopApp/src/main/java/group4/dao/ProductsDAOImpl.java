@@ -156,4 +156,15 @@ public class ProductsDAOImpl implements ProductsDAO {
 		return target.getPrice();
 	}
 
+	@Override
+	public String getProductName(int productId) 
+	{
+		Product target = getProductFromId(productId);
+		
+		if(target == null)
+		{return "N/A";}
+		
+		return target.getProductName();
+	}
+
 }

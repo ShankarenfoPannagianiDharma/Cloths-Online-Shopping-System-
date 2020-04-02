@@ -34,7 +34,7 @@ public class OrdersDAOImpl implements OrdersDAO {
 			order.setDestinationAddress(rs.getString("destination"));
 
 			// get products in order->calls for another sql query for each order
-			order.setPurchasedItems(getItemsOrdered(order.getOrderID()));
+			order.setPurchasedItems(getOrderDetail(order.getOrderID()));
 
 			return order;
 		}
@@ -44,29 +44,13 @@ public class OrdersDAOImpl implements OrdersDAO {
 	private static final class OrderDetailsMapper implements RowMapper<OrderDetail> {
 		public OrderDetail mapRow(ResultSet rs, int rowNum) throws SQLException {
 			OrderDetail order = new OrderDetail();
-			order.setId(rs.getInt("id"));
+			order.setOrderid(rs.getInt("orderid"));
 			order.setAmount(rs.getInt("amount"));
 			order.setItemid(rs.getInt("itemid"));
-			order.setOrderid(rs.getInt("orderid"));
+			order.setItemName(rs.getString("name"));
+			order.setPrice(rs.getDouble("price"));
 
 			return order;
-		}
-	}
-
-	// utility function to map sql row =to=> object class
-	// NOT THE SAME AS THE MAPPER IN PRODUCTSDAOIMPL!
-	private static final class PurchasedProductsMapper implements RowMapper<Product> {
-		// resultset must INNER JOIN with itemtypes and itemsizes
-		public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
-			Product item = new Product();
-			item.setProductID(rs.getInt("id"));
-			item.setProductName(rs.getString("name"));
-			item.setImgURL(rs.getString("image"));
-			item.setPrice(rs.getDouble("price"));
-			item.setProductSize(rs.getString("size"));
-			item.setProductType(rs.getString("category"));
-			item.setStock(rs.getInt("amount"));
-			return item;
 		}
 	}
 	
@@ -79,97 +63,34 @@ public class OrdersDAOImpl implements OrdersDAO {
 		}
 	}
 
-	public static List<Product> getItemsOrdered(int orderID) {
+	//extension of get orders- get items that are ordered n that cart
+	public static List<OrderDetail> getOrderDetail(int orderID) {
 		// get the products that are ordered
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("id", orderID);
+		params.put("orderID", orderID);
 
 		// consults orderdetails table -<- products -|- itemsizes & itemtype
-		String sql = "SELECT products.id,name,orderdetails.price,image,itemSizes.size,category,amount FROM products "
-				+ "INNER JOIN orderdetails ON products.id = orderdetails.itemid "
-				+ "INNER JOIN orders ON orderdetails.orderid = orders.id "
-				+ "INNER JOIN itemSizes ON itemSizes.id = products.size "
-				+ "INNER JOIN itemTypes ON itemTypes.id = products.type " + " WHERE  orders.id=:id ";
+		String sql = "SELECT orderid,itemid,amount,orderdetails.price,name FROM orderdetails INNER JOIN products ON orderdetails.itemid = products.id WHERE orderid=:orderID";
 
-		List<Product> results = namedParameterJdbcTemplate.query(sql, params, new PurchasedProductsMapper());
+		List<OrderDetail> results = namedParameterJdbcTemplate.query(sql, params, new OrderDetailsMapper());
 
-		if (results.size() == 0) {
-			return null;
-		}
+		if (results.size() == 0) 
+		{ return null; }
 		return results;
 	}
 
 	@Override
-	public List<OrderDetail> getOrderDetail(int orderID, int userId) {
-		// get the products that are ordered
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("orderID", orderID);
-		params.put("userId", userId);
-
-		// consults orderdetails table -<- products -|- itemsizes & itemtype
-		String sql = "SELECT * FROM orderdetails " + "INNER JOIN products ON products.id = orderdetails.itemid "
-				+ "INNER JOIN orders ON orderdetails.orderid = orders.id "
-				+ " WHERE  orders.id=:orderID AND orders.customerid=:userId";
-
-		List<OrderDetail> results = namedParameterJdbcTemplate.query(sql, params, new OrderDetailsMapper());
-		System.out.println("getOrderDetail");
-		System.out.println(params);
-		System.out.println("result is" + results);
-		if (results.size() == 0) {
-			return null;
-		}
-		return results;
-	}
-
-	//TODO: make obsolete
-	@Override
-	public void addCartItem(int orderID, int productID, int userId) {
-		// get the products that are ordered
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("orderID", orderID);
-		params.put("productID", productID);
-		params.put("userId", userId);
-
-		// consults orderdetails table -<- products -|- itemsizes & itemtype
-		String sql = "SELECT * FROM orderdetails "
-				+ "INNER JOIN products ON products.id = orderdetails.itemid "
-				+ "INNER JOIN orders ON orderdetails.orderid = orders.id "
-				+ " WHERE  orders.id=:orderID AND products.id=:productID AND orders.customerid=:userId ";
-
-		List<OrderDetail> results = namedParameterJdbcTemplate.query(sql, params, new OrderDetailsMapper());
-
-		if (results.size() > 0) {
-			System.out.println("update");
-
-			System.out.println(params);
-			sql = "UPDATE orderdetails SET amount = amount + 1 "
-					+ " WHERE  orderdetails.itemid=:productID AND orderdetails.orderid=:orderID ";
-
-		} else {
-			System.out.println("insert");
-			
-			System.out.println(params);
-
-			sql = "INSERT INTO orderdetails (itemid, orderid, price) VALUES (:productID, :orderID, 0)";
-		}
-
-		namedParameterJdbcTemplate.update(sql, params);
-
-	}
-
-	@Override
-	public List<Order> getCustomersOrders(int customerID) {
+	public List<Order> getCustomersOrders(int customerID) 
+	{
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", customerID);
 
-		String sql = "SELECT * FROM orders " + "WHERE customerid=:id ";
-
+		String sql = "SELECT * FROM orders WHERE customerid=:id ";
 		List<Order> results = namedParameterJdbcTemplate.query(sql, params, new OrdersMapper());
 
-		if (results.size() == 0) {
-			return null;
-		}
-
+		if (results.size() == 0) 
+		{ return null; }
+		
 		return results;
 	}
 
@@ -186,17 +107,6 @@ public class OrdersDAOImpl implements OrdersDAO {
 		}
 
 		return results;
-	}
-	
-	//TODO: make obsolete #Bao
-	public void createNewOrder(int userId) {
-		//get the userID 
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("userID", userId);
-		String sql = "INSERT INTO ORDERS (customerid,destination) "
-					+ "VALUES (:userID,(SELECT destination FROM orders WHERE customerid=:userID ORDER BY orders.id DESC LIMIT 1))";
-		
-		namedParameterJdbcTemplate.update(sql, params);
 	}
 
 	//check if item amount can be satisfied by stock
@@ -256,5 +166,21 @@ public class OrdersDAOImpl implements OrdersDAO {
 			namedParameterJdbcTemplate.update(sql, params3);
 		}
 		
+	}
+
+	//specifically get one specific order info
+	@Override
+	public Order getSpecificOrder(int orderID) 
+	{
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", orderID);
+		String sql = "SELECT * FROM orders WHERE id=:id";
+
+		List<Order> results = namedParameterJdbcTemplate.query(sql, params, new OrdersMapper());
+
+		if (results.size() != 1) 
+		{return null;}
+
+		return results.get(0);
 	}
 }

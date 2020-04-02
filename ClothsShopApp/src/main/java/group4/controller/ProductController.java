@@ -71,7 +71,6 @@ public class ProductController
 		model.addAttribute("orderAmount", user.getOrderItemCounts());
 		model.addAttribute("orderCost", df2.format(user.getOrderTotalCosts()));	
 
-		//model.addAttribute("orderdetail", orderdetail);
 		return "cart";
 	}
 	
@@ -105,6 +104,7 @@ public class ProductController
 			orderDItem.setItemid(productId);
 			orderDItem.setAmount(1);
 			orderDItem.setPrice(productsDao.getProductCost(productId));
+			orderDItem.setItemName(productsDao.getProductName(productId));
 			userCart.add(orderDItem);
 		}
 		//save changes? is this line necessary?
@@ -129,18 +129,6 @@ public class ProductController
 		model.addAttribute("targetProduct", targetProduct);
 
 		return "ItemDetails";
-	}
-	
-	//#Bao
-	//TODO: remove
-	@GetMapping("/newCart")
-	public String newCart(HttpSession session, Model model) {
-		User user = (User) session.getAttribute("user");
-		if (user == null) {
-			return "redirect:login";
-		}
-		ordersDao.createNewOrder(user.getId());
-		return "newCart";	
 	}
 	
 	//postmap from cart: empty the cart
@@ -201,4 +189,20 @@ public class ProductController
 		//return
 		return "redirect:cart";
 	}
+	
+	//postmap from cart: remove item from cart
+	@PostMapping("/cartRemoveOne")
+	public String cartRemoveOne(HttpSession session,@ModelAttribute("Product") Product productForm, Model model)
+	{
+		User user = (User) session.getAttribute("user");
+		if (user == null) 
+		{return "redirect:login";}
+
+		//reduce target item from session
+		user.removeOne(productForm.getProductID());
+		
+		//return to cart
+		return "redirect:cart";
+	}
+
 }

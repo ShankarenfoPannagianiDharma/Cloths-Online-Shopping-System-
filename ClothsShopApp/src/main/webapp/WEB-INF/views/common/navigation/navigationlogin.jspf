@@ -12,8 +12,7 @@
 			</a></li>
 			<li class="nav-item"><a class="nav-link" href="/product/list">Products</a></li>
 			<li class="nav-item"><a class="nav-link" href="/product/cart">Current Cart</a></li>
-			<!-- #Bao -->
-			<li class="nav-item"><a class="nav-link" href="/product/newCart">Create new Cart</a></li>
+			<li class="nav-item"><a class="nav-link" href="/account/purchases">View Purchases</a></li>
 			<li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
 			</li>
 		</ul>

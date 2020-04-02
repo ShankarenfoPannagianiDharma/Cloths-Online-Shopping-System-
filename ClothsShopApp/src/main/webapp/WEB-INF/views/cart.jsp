@@ -2,21 +2,26 @@
 <%@ include file="common/navigation.jspf"%>
 
 <div class="container">
-	<!-- Display utility: all users -->
 	<p>Cart:</p>
 	<table class="table table-striped table-bordered">
 		<tr>
-			<th>Order Id</th>
-			<th>Product Id</th>
+			<th>Product</th>
 			<th>Cost (ea.)</th>
 			<th>Amount</th>
+			<th>Remove</th>
 		</tr>
 		<c:forEach var="orderd" items="${orderdetail}">
 			<tr>
-				<td>${orderd.orderid}</td>
-				<td>${orderd.itemid}</td>
+				<td>${orderd.itemName}</td>
 				<td>$${orderd.price}</td>
 				<td>${orderd.amount}</td>
+				<td>
+					<!-- Remove an item button: use model products to store ID -->
+					<form:form action="cartRemoveOne" cssClass="form-horizontal" method="post" modelAttribute="Product">
+					<form:input type="hidden" value="${orderd.itemid}" path="productID"/>
+						<button type="submit" class="btn btn-success btn-block">X</button>
+					</form:form>
+				</td>
 			</tr>
 		</c:forEach>
 

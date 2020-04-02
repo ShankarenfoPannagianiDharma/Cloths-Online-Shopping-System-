@@ -107,5 +107,25 @@ public class User {
 		return totals;
 	}
 
+	//remove the specific item amount - 1, also remove from list if amount = 0
+	public void removeOne(int productID) 
+	{
+		//find target productID in cart
+		for(OrderDetail item : selectedProducts)
+		{
+			//if match found, remove amount - 1
+			if(item.getItemid() == productID)
+			{
+				item.setAmount( item.getAmount() - 1 );
+				
+				//if amount is 0, remove from list & quit
+				if(item.getAmount() == 0)
+				{ selectedProducts.remove(item); }
+				
+				return;
+			}
+		}
+	}
+
 	
 }

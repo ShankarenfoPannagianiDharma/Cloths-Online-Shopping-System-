@@ -7,7 +7,7 @@ public class Order
 	private int orderID;
 	private int customerID;
 	private String destinationAddress;
-	private List<Product> purchasedItems; //<-- amount causes duplication
+	private List<OrderDetail> purchasedItems;
 	
 	//GETTERSETTERS
 	public int getCustomerID() {
@@ -28,10 +28,10 @@ public class Order
 	public void setDestinationAddress(String destinationAddress) {
 		this.destinationAddress = destinationAddress;
 	}
-	public List<Product> getPurchasedItems() {
+	public List<OrderDetail> getPurchasedItems() {
 		return purchasedItems;
 	}
-	public void setPurchasedItems(List<Product> purchasedItems) {
+	public void setPurchasedItems(List<OrderDetail> purchasedItems) {
 		this.purchasedItems = purchasedItems;
 	}
 	
@@ -39,8 +39,23 @@ public class Order
 	public double orderTotalCosts()
 	{
 		double calculated = 0;
-		for(Product item : purchasedItems)
-		{ calculated += item.getPrice(); }
+		if(purchasedItems != null)
+		{
+			for(OrderDetail item : purchasedItems)
+			{ calculated += item.getPrice(); }
+		}
+		return calculated;
+	}
+	
+	//calculate the total number of items in list
+	public int orderTotalNum()
+	{
+		int calculated = 0;
+		if(purchasedItems != null)
+		{
+			for(OrderDetail item : purchasedItems)
+			{ calculated += item.getAmount(); }
+		}
 		return calculated;
 	}
 }

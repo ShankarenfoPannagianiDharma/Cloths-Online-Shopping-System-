@@ -1,21 +1,12 @@
 package group4.model;
 
-public class OrderDetail {
-	private int id;
+public class OrderDetail 
+{
 	private int orderid;
 	private int itemid;
 	private int amount;
 	private double price;	//price of product at time of sale
-	
-	
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
+	private String itemName;//optional field for product's name
 
 	public int getOrderid() {
 		return orderid;
@@ -49,9 +40,17 @@ public class OrderDetail {
 		this.price = cost;
 	}
 	
+	public String getItemName() {
+		return itemName;
+	}
+
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
 
 	//methods for utility
 	public void incrementAmount() 
 	{amount++;}
+
 
 }

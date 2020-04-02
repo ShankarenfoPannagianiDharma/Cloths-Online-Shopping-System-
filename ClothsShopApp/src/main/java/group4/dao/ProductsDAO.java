@@ -20,4 +20,6 @@ public interface ProductsDAO
 	boolean hasStock(int productId);
 
 	double getProductCost(int productId);
+
+	String getProductName(int productId);
 }
