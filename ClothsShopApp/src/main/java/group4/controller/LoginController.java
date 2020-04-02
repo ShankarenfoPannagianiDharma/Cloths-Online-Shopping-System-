@@ -79,16 +79,16 @@ public class LoginController {
 	}
 	
 	//#Bao
-		@GetMapping("/AdminMenu")
-		public String adminLogin(HttpSession session, Model model) 
-		{
-			//if there is a user session already
-		    User user = (User) session.getAttribute("user");
-		    //get list of available users
-		    List<User> users = userDao.GetAllUsers();
-		    model.addAttribute("allUsers", users);
-		    return "AdminMenu";
-		}
+	@GetMapping("/AdminMenu")
+	public String adminLogin(HttpSession session, Model model) 
+	{
+		//if there is a user session already
+	    User user = (User) session.getAttribute("user");
+	    //get list of available users
+	    List<User> users = userDao.GetAllUsers();
+	    model.addAttribute("allUsers", users);
+	    return "AdminMenu";
+	}
 	
 	@PostMapping("/login") 
 	public String login(@ModelAttribute("loginInfo") LoginInfo loginInfo, Model model)

@@ -1,5 +1,6 @@
 package group4.controller;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +50,12 @@ public class ProductController
 		model.addAttribute("products", products);
 		return "show-products";
 	}
-
+	
+	
+	@ModelAttribute("PurchaseFormModel")
+	public PurchaseFormModel purchaseForm() 
+	{return new PurchaseFormModel();}
+	
 	@GetMapping("/cart")
 	public String showCart(HttpSession session, Model model) {
 		User user = (User) session.getAttribute("user");
@@ -57,20 +63,20 @@ public class ProductController
 			return "redirect:login";
 		}
 		
-		//TODO: Display session cart
 		//get cart from session
 		List<OrderDetail> cartItems = user.getSelectedProducts();
 		model.addAttribute("orderdetail",cartItems);
 		//add cart information
+		DecimalFormat df2 = new DecimalFormat("#.##");
 		model.addAttribute("orderAmount", user.getOrderItemCounts());
-		model.addAttribute("orderCost", user.getOrderTotalCosts());	
+		model.addAttribute("orderCost", df2.format(user.getOrderTotalCosts()));	
 
 		//model.addAttribute("orderdetail", orderdetail);
 		return "cart";
 	}
 	
 	//add to cart button triggers this post mapping- contains Product object with only ID.
-		@PostMapping("/addToCart")            //product from form is in this model
+	@PostMapping("/addToCart")            //product from form is in this model
 	public String selected(HttpSession session, @ModelAttribute("Product") Product product, Model model) {
 		User user = (User) session.getAttribute("user");
 		int productId = product.getProductID();
@@ -84,6 +90,7 @@ public class ProductController
 		//if cart doesn't exist, add new list
 		if(userCart == null)
 		{userCart = new ArrayList<OrderDetail>();}
+		
 		//add the selected item to cart
 		//catch: does item already exist in list?
 		OrderDetail item = user.itemInCart(productId);
@@ -125,7 +132,7 @@ public class ProductController
 	}
 	
 	//#Bao
-	//TODO: make obsolete. Should not be a thing
+	//TODO: remove
 	@GetMapping("/newCart")
 	public String newCart(HttpSession session, Model model) {
 		User user = (User) session.getAttribute("user");
@@ -136,4 +143,62 @@ public class ProductController
 		return "newCart";	
 	}
 	
+	//postmap from cart: empty the cart
+	@PostMapping("/cancelCart")
+	public String cancelCart(HttpSession session, Model model)
+	{
+		User user = (User) session.getAttribute("user");
+		if (user == null) 
+		{return "redirect:login";}
+
+		//remove cart from session
+		user.setSelectedProducts(null);
+		
+		//TODO: message- cart cleared
+		System.out.println("Cart cleared");
+		
+		return "redirect:cart";
+	}
+	
+	//postmap from cart: confirm purchase
+	@PostMapping("/makePurchase")
+	public String makePurchase(HttpSession session,@ModelAttribute("PurchaseFormModel") PurchaseFormModel purchaseFormModel, Model model)
+	{
+		User user = (User) session.getAttribute("user");
+		if (user == null) 
+		{return "redirect:login";}
+
+		//get data from session
+		List<OrderDetail> cart = user.getSelectedProducts();
+		
+		//ensure address is not empty
+		if(purchaseFormModel.getTargetAddress().isEmpty())
+		{
+			//TODO: error message- cart purchase more than stock.
+			System.out.println("Address is empty.");
+			return "redirect:cart";
+		}
+		
+		//ensure for each item bought there are enough in stock
+		for(OrderDetail item : cart)
+		{
+			if(!ordersDao.hasEnoughStock(item))
+			{
+				//TODO: error message- cart purchase more than stock.
+				System.out.println("Not enough stock for product id: "+item.getItemid());
+				return "redirect:cart";
+			}
+		}
+		
+		//make changes to database
+		ordersDao.createOrder(user.getId(),cart,purchaseFormModel.getTargetAddress());
+		//TODO: message- all ok
+		System.out.println("Purchase successful");
+		
+		//clear cart
+		user.setSelectedProducts(null);
+		
+		//return
+		return "redirect:cart";
+	}
 }

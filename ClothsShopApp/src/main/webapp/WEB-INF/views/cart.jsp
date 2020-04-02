@@ -26,6 +26,13 @@
 	<p>Total price: $${orderCost}</p>
 	
 	<!-- Make purchase, empty cart buttons -->
+	<form:form action="makePurchase" cssClass="form-horizontal" method="post" modelAttribute="PurchaseFormModel">
+		Delivery address: <form:input path="targetAddress" cssClass="form-control" />
+		<button type="submit" class="btn btn-success btn-block">Purchase</button>
+	</form:form>
+	<form:form action="cancelCart" cssClass="form-horizontal" method="post">
+		<button type="submit" class="btn btn-success btn-block">Clear Cart</button>
+	</form:form>
 	
 </div>
 <%@ include file="common/footer.jspf"%>

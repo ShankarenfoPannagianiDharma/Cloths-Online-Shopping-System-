@@ -85,9 +85,12 @@ public class User {
 	public int getOrderItemCounts() 
 	{
 		int itemcounts = 0;
-		//visit each item in cart, add up the amounts
-		for(int i = 0; i < selectedProducts.size(); i++)
-		{ itemcounts = itemcounts + selectedProducts.get(i).getAmount(); }
+		if(selectedProducts != null)
+		{
+			//visit each item in cart, add up the amounts
+			for(int i = 0; i < selectedProducts.size(); i++)
+			{ itemcounts = itemcounts + selectedProducts.get(i).getAmount(); }
+		}
 		return itemcounts;
 	}
 
@@ -95,9 +98,12 @@ public class User {
 	public double getOrderTotalCosts() 
 	{
 		double totals = 0;
-		//visit each item in cart, item.price * item.amount
-		for(int i = 0; i < selectedProducts.size(); i++)
-		{ totals = totals + (selectedProducts.get(i).getAmount() * selectedProducts.get(i).getPrice()); }
+		if(selectedProducts != null)
+		{
+			//visit each item in cart, item.price * item.amount
+			for(int i = 0; i < selectedProducts.size(); i++)
+			{ totals = totals + (selectedProducts.get(i).getAmount() * selectedProducts.get(i).getPrice()); }
+		}
 		return totals;
 	}
 

@@ -15,11 +15,6 @@ import group4.model.Order;
 import group4.model.OrderDetail;
 import group4.model.Product;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.PreparedStatementCallback;
-
 @Repository
 public class OrdersDAOImpl implements OrdersDAO {
 
@@ -74,6 +69,15 @@ public class OrdersDAOImpl implements OrdersDAO {
 			return item;
 		}
 	}
+	
+	//Mapper specifically for stock
+	private static final class stockMapper implements RowMapper<Product>{
+		public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
+			Product item = new Product();
+			item.setStock(rs.getInt("stock"));
+			return item;
+		}
+	}
 
 	public static List<Product> getItemsOrdered(int orderID) {
 		// get the products that are ordered
@@ -117,7 +121,7 @@ public class OrdersDAOImpl implements OrdersDAO {
 		return results;
 	}
 
-	@SuppressWarnings("unchecked")
+	//TODO: make obsolete
 	@Override
 	public void addCartItem(int orderID, int productID, int userId) {
 		// get the products that are ordered
@@ -184,7 +188,7 @@ public class OrdersDAOImpl implements OrdersDAO {
 		return results;
 	}
 	
-	//#Bao
+	//TODO: make obsolete #Bao
 	public void createNewOrder(int userId) {
 		//get the userID 
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -193,5 +197,64 @@ public class OrdersDAOImpl implements OrdersDAO {
 					+ "VALUES (:userID,(SELECT destination FROM orders WHERE customerid=:userID ORDER BY orders.id DESC LIMIT 1))";
 		
 		namedParameterJdbcTemplate.update(sql, params);
+	}
+
+	//check if item amount can be satisfied by stock
+	@Override
+	public boolean hasEnoughStock(OrderDetail item) 
+	{
+		//get product of item
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", item.getItemid());
+		String sql = "SELECT stock FROM products WHERE products.id=:id ";
+		List<Product> results = namedParameterJdbcTemplate.query(sql, params, new stockMapper());
+
+		if (results.size() != 1) 
+		{ return false; }
+
+		Product product = results.get(0);
+
+		//compare values
+		return item.getAmount() <= product.getStock();
+	}
+
+	@Override
+	public void createOrder(int id, List<OrderDetail> cart,String addr) 
+	{
+		//create new order for customer id
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("userID", id);
+		params.put("addressTarget",addr);
+		String sql = "INSERT INTO ORDERS (customerid,destination) VALUES (:userID,:addressTarget)";
+		namedParameterJdbcTemplate.update(sql, params);
+		
+		//retrieve the newly created order's id: get customerid's last created order
+		List<Order> customerOrders = getCustomersOrders(id);
+		Order target = customerOrders.get(customerOrders.size()-1);
+		
+		//create orderDetails for order
+		for(OrderDetail item : cart)
+		{
+			Map<String, Object> params2 = new HashMap<String, Object>();
+			params2.put("orderID", target.getOrderID());
+			params2.put("itemID", item.getItemid());
+			params2.put("amount", item.getAmount());
+			params2.put("price", item.getPrice());
+			sql = "INSERT INTO orderdetails (orderid, itemid, amount, price) VALUES (:orderID, :itemID, :amount, :price)";
+			namedParameterJdbcTemplate.update(sql, params2);
+			
+			//modify the stock in products
+			//calculate new values
+			sql = "SELECT stock FROM products WHERE products.id=:itemID ";
+			List<Product> results = namedParameterJdbcTemplate.query(sql, params2, new stockMapper());			
+			Product product = results.get(0);
+			
+			Map<String, Object> params3 = new HashMap<String, Object>();
+			params3.put("id", item.getItemid());
+			params3.put("newstock", product.getStock() - item.getAmount());
+			sql = "UPDATE products SET stock=:newstock WHERE products.id=:id ";
+			namedParameterJdbcTemplate.update(sql, params3);
+		}
+		
 	}
 }
